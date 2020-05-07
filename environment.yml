@@ -1,4 +1,4 @@
-name: fin-disclosures-nlp/envs
+name: /Users/david/Projects/fin-disclosures-nlp/envs
 channels:
   - conda-forge
   - defaults
@@ -13,7 +13,7 @@ dependencies:
   - certifi=2020.4.5.1=py38h32f6830_0
   - cffi=1.14.0=py38h356ff06_0
   - chardet=3.0.4=py38h32f6830_1006
-  - cryptography=2.8=py38hb761dab_2
+  - cryptography=2.9.2=py38hb761dab_0
   - decorator=4.4.2=py_0
   - defusedxml=0.6.0=py_0
   - entrypoints=0.3=py38h32f6830_1001
@@ -31,7 +31,7 @@ dependencies:
   - jupyter_core=4.6.3=py38h32f6830_1
   - jupyterlab=2.1.0=py_1
   - jupyterlab_server=1.1.1=py_0
-  - libcxx=10.0.0=1
+  - libcxx=10.0.0=h1af66ff_2
   - libffi=3.2.1=h4a8c4bd_1007
   - libsodium=1.0.17=h01d97ff_0
   - markupsafe=1.1.1=py38h64e0658_1
@@ -46,7 +46,7 @@ dependencies:
   - parso=0.7.0=pyh9f0ad1d_0
   - pexpect=4.8.0=py38h32f6830_1
   - pickleshare=0.7.5=py38h32f6830_1001
-  - pip=20.0.2=py_2
+  - pip=20.1=pyh9f0ad1d_0
   - prometheus_client=0.7.1=py_0
   - prompt-toolkit=3.0.5=py_0
   - ptyprocess=0.6.0=py_1001
@@ -55,7 +55,7 @@ dependencies:
   - pyopenssl=19.1.0=py_1
   - pyrsistent=0.16.0=py38h64e0658_0
   - pysocks=1.7.1=py38h32f6830_1
-  - python=3.8.2=hbb7e721_6_cpython
+  - python=3.8.2=hd5f0129_7_cpython
   - python-dateutil=2.8.1=py_0
   - python_abi=3.8=1_cp38
   - pyzmq=19.0.0=py38h1fcdcd6_1
@@ -80,7 +80,20 @@ dependencies:
   - zipp=3.1.0=py_0
   - zlib=1.2.11=h0b31af3_1006
   - pip:
-      - pdfminer-six==20200402
-      - pycryptodome==3.9.7
-      - sortedcontainers==2.1.0
+    - appdirs==1.4.3
+    - bs4==0.0.1
+    - cssselect==1.1.0
+    - fake-useragent==0.1.11
+    - lxml==4.5.0
+    - parse==1.15.0
+    - pdfminer-six==20200402
+    - pycryptodome==3.9.7
+    - pyee==7.0.1
+    - pyppeteer==0.0.25
+    - pyquery==1.4.1
+    - requests-html==0.10.0
+    - sortedcontainers==2.1.0
+    - tqdm==4.45.0
+    - w3lib==1.21.0
+    - websockets==8.1
 prefix: /Users/david/Projects/fin-disclosures-nlp/envs
