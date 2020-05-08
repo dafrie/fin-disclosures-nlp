@@ -15,6 +15,10 @@ It is recommended to use _miniconda_ (or `conda`) as opposed to Python only defa
 4. Start JupyterLab server: `jupyter lab`
 5. To deactivate the environment, run `conda deactivate`
 
+## Data
+
+Raw annual reports, sustainability reports and if available 20-F's of the Euro STOXX 50 for the years 1999-2019 can be [found here (PW: Same as the repository name)](https://cloud.dafrie.dev/index.php/s/QnRH9z9SRJi3rqK)
+
 ## Cheat Sheet:
 
 - Update environment file if a package was added: `conda env export -f environment.yml`
