@@ -24,6 +24,15 @@ Raw annual reports, sustainability reports and if available 20-F's of the Euro S
 - Install Docker Desktop [Install Docker](https://www.docker.com/get-started)
 - The `docker-compose.yml` in the root directory contains the container definitions and sets up networking
 - The `Dockerfile` in the `./data` directory contains the container config for the pdf mining tasks
+- Start tmux:
+  `tmux` or `tmux new -s myname`
+- Connect to container: `docker ps` and `docker exec -it 3b794985f448 bash`
+- Name the session accordingly by first send the prefix `Ctrl` + `b` and then `$`
+- Start long running process and leave/detach the session with prefix `Ctrl` + `b` and then `d`
+
+- Later, when you want to attach to the session:
+  `tmux list-sessions`
+  `tmux attach-session -t 0`
 
 ## Cheat Sheet:
 

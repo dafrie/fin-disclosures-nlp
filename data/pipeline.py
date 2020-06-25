@@ -29,8 +29,7 @@ def process_file(file, kwargs):
     filename = file.stem
     output_folder = os.path.join(file.parent, filename)
     print(f'Processing file {file} into {output_folder} with parser {parser}')
-    PdfExtractor(input_file=file, output_folder=output_folder,
-                 parser=parser)
+    PdfExtractor(input_file=file, output_folder=output_folder, **kwargs)
     print(f'Done processing file {file}')
 
 
@@ -49,6 +48,8 @@ def parse_arguments():
 
     parser.add_argument("-p", "--parser", help="Specify the PDF parser",
                         choices=('tika', 'pdfminer'), default="tika")
+    parser.add_argument("-o", "--ocr-strategy", help="Specify the OCR Strategy",
+                        choices=('no_ocr', 'ocr_only', 'ocr_and_text'), default="no_ocr")
     args = parser.parse_args()
     return args
 

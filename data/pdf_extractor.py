@@ -69,11 +69,12 @@ def get_max_similarity(word):
 
 
 class PdfExtractor:
-    def __init__(self, input_file, output_folder=None, parser="tika", **kwargs):
+    def __init__(self, input_file, output_folder=None, parser="tika", ocr_strategy="no_ocr", **kwargs):
         self.logger = logging.getLogger('pdf_extractor')
         self.input_file = input_file
         self.output_folder = output_folder
         self.parser = parser
+        self.ocr_strategy = ocr_strategy
         self.process_document()
 
     def extract_toc(self):
@@ -142,9 +143,9 @@ class PdfExtractor:
             str(self.input_file),
             xmlContent=True,
             requestOptions={'timeout': 6000},
+            # 'X-Tika-PDFextractInlineImages' : true # Unfortunately does not really work
             # Options: 'no_ocr', 'ocr_only' and 'ocr_and_text'
-            # 'X-Tika-PDFextractInlineImages' : true
-            headers={'X-Tika-PDFOcrStrategy': 'ocr_and_text'}
+            headers={'X-Tika-PDFOcrStrategy': self.ocr_strategy}
         )
         xhtml_data = BeautifulSoup(data['content'], features="lxml")
 
@@ -267,7 +268,8 @@ def parse_arguments():
                         help="Log file location. By default, it stores the log file in the output directory", default=None)
     parser.add_argument("-p", "--parser", help="Specify the PDF parser",
                         choices=('tika', 'pdfminer'), default="pdfminer")
-
+    parser.add_argument("-o", "--ocr-strategy", help="Specify the OCR Strategy",
+                        choices=('no_ocr', 'ocr_only', 'ocr_and_text'), default="no_ocr")
     args = parser.parse_args()
     return args
 
