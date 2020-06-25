@@ -19,10 +19,15 @@ It is recommended to use _miniconda_ (or `conda`) as opposed to Python only defa
 
 Raw annual reports, sustainability reports and if available 20-F's of the Euro STOXX 50 for the years 1999-2019 can be [found here (PW: Same as the repository name)](https://cloud.dafrie.dev/index.php/s/QnRH9z9SRJi3rqK)
 
+## Docker for containerization
+
+- Install Docker Desktop [Install Docker](https://www.docker.com/get-started)
+- The `docker-compose.yml` in the root directory contains the container definitions and sets up networking
+- The `Dockerfile` in the `./data` directory contains the container config for the pdf mining tasks
+
 ## Cheat Sheet:
 
-- Update environment file if a package was added: `conda env export -f environment.yml`
-- Update environment: `conda env update --prefix ./env --file environment.yml --prune`
+- Update environment file if a package was added: `conda env export -f environment.yml` or `conda env export > environment.yml`. NOTE: This will overwrite everything and adds unecessary packages, making cross-platform compatibility difficult. So better to update manually...
 
 ## Additional Resources:
 

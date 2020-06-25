@@ -1,0 +1,5 @@
+# List all temporary and env files
+envs
+.vscode
+*/**/__pycache__
+*/**/.ipynb_checkpoints
