@@ -1,0 +1,28 @@
+---
+version: "3"
+# volumes:
+#  files:
+services:
+  tika-server:
+    image: logicalspark/docker-tikaserver
+    container_name: tika-server
+    ports:
+      - 9998:9998
+    restart: always
+  pdf-mining:
+    container_name: pdf-mining
+    image: pdf-mining:latest # TODO: Should be coming from registry?
+    build:
+      context: .
+      dockerfile: ./data/Dockerfile
+    ports:
+      - 8888:8888
+    depends_on:
+      - tika-server
+    tty: true # Enable a interactive session without shutting down the container immediately. If a CMD is added in the Dockerfile, a workaround has to be uses
+    command: bash
+    volumes:
+      - ~/files:/files
+    environment:
+      - TIKA_SERVER_ENDPOINT=http://tika-server:9998
+      - TIKA_CLIENT_ONLY=true
