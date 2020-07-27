@@ -8,7 +8,6 @@ services:
     container_name: tika-server
     ports:
       - 9998:9998
-    restart: always
   pdf-mining:
     container_name: pdf-mining
     image: pdf-mining:latest # TODO: Should be coming from registry?
