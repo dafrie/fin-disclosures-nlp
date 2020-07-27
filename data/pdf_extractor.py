@@ -245,7 +245,12 @@ class PdfExtractor:
         """
 
     def process_document(self):
-        self.toc = self.extract_toc()
+        try:
+            self.toc = self.extract_toc()
+        except Exception as error:
+            self.toc = []
+            self.logger.error(
+                f'Exception getting TOC! Message: {error}')
         self.pages_text = self.extract_text_per_page()
         self.write_output()
 
