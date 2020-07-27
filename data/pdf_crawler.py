@@ -1,5 +1,5 @@
 """A PDF Crawler of different types of disclosure documents from company websites
-    
+
     How to use:
     - Update the config below
     - Run "python pdf_crawler.py"
@@ -12,6 +12,8 @@ import requests
 import pprint
 import json
 import itertools
+import tempfile
+import subprocess
 
 import tqdm
 from PyInquirer import style_from_dict, Token, prompt, print_json
@@ -173,10 +175,14 @@ class PdfCrawler:
         print("============= RESULTS =============")
         print(json.dumps(self.document_links, indent=1))
 
-    async def fetch(self, url, filename):
+    async def fetch(self, url, filename, unlock=True):
         r = await self.asession.get(url, headers=headers)
         with open(filename, 'wb') as f:
             f.write(r.content)
+        # Many PDFs have an empty password and can not be modified
+        # Note: Requires qpdf installed!
+        if unlock:
+            subprocess.run(["qpdf", "--decrypt --replace-input", filename])
 
     def download_links(self):
         self.prepare_links()
