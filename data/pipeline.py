@@ -18,7 +18,7 @@ def get_files(input_folder):
     for company in os.scandir(input_folder):
         if not company.name.startswith('.') and company.is_dir():
             for entry in os.scandir(company.path):
-                if not entry.name.startswith('.') and entry.is_file():
+                if not entry.name.startswith('.') and entry.name.endswith('.pdf') and entry.is_file():
                     files.append(os.path.abspath(entry.path))
     return files
 
