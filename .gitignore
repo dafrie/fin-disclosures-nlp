@@ -132,3 +132,6 @@ dmypy.json
 
 .DS_Store
 .vscode
+
+/input_files
+config.py
