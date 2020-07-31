@@ -1,6 +1,8 @@
+from nltk import WordNetLemmatizer
 import os
 from pathlib import Path
 import re
+import string
 
 import yaml
 import pandas as pd
@@ -9,11 +11,14 @@ import numpy as np
 import nltk
 from nltk.corpus import stopwords
 
+import spacy
+from spacy.lang.en import English
+nlp = spacy.load('en_core_web_md')
+
 try:
     from nltk import wordnet
 except ImportError:
     nltk.download('wordnet')
-from nltk import WordNetLemmatizer
 
 try:
     from nltk import punkt
@@ -26,14 +31,17 @@ except LookupError:
     nltk.download('stopwords')
 
 
-def get_text_from_yaml(path):
+def get_text_from_yaml(path, include_page_no=True):
     text = ''
     if os.path.isfile(path):
         with open(path, 'r') as stream:
             try:
                 content = yaml.safe_load(stream)
-                for page in content['pages']:
-                    text += page['text']
+                for idx, page in enumerate(content['pages']):
+                    if include_page_no:
+                        text += '======= Page: ' + \
+                            str(idx + 1) + ' =======\n\n\n'
+                    text += page['text'] + '\n\n\n'
             except yaml.YAMLError as exc:
                 print(exc)
     return text
@@ -43,15 +51,61 @@ def tokenize(text):
     """
 
     """
+    stop_words = stopwords.words('english')
     tokens = nltk.word_tokenize(text)
     words = []
     wnl = WordNetLemmatizer()
     for t in tokens:
-        words.append(wnl.lemmatize(word=t))
+        if not t in stop_words:
+            words.append(wnl.lemmatize(word=t))
     return words
 
 
-def get_df(input_path='../files', report_type_mappings={}, selected_report_types={}):
+def spacy_tokenizer(text):
+    """Tokenizes, removes stop words and lemmatizes the input text using Spacy NLP
+
+    Parameters
+    ----------
+    text : String
+        Input text to process
+
+    Returns
+    -------
+    String[]
+        A list of tokens
+    """
+    # Setup spacy
+    punctuations = string.punctuation
+    stop_words = spacy.lang.en.stop_words.STOP_WORDS
+    parser = English()
+
+    # Spacy is quite memory hungry, thus split the doc...
+    max_length = 1000000
+    split_docs = [text[index: index + max_length]
+                  for index in range(0, len(text), max_length)]
+
+    def _tokenize(text):
+        # Creating our token object, which is used to create documents with linguistic annotations.
+        _tokens = parser(text)
+
+        # Lemmatizing each token and converting each token into lowercase
+        _tokens = [word.lemma_.lower().strip() if word.lemma_ !=
+                   "-PRON-" else word.lower_ for word in _tokens]
+
+        # Removing stop words
+        _tokens = [
+            word for word in _tokens if word not in stop_words and word not in punctuations]
+
+        # return preprocessed list of tokens
+        return _tokens
+
+    tokens = []
+    for d in split_docs:
+        tokens.extend(_tokenize(d))
+    return tokens
+
+
+def get_df(input_path='../input_files/files', report_type_mappings={}, selected_report_types={}, include_text=True, include_page_no=True):
     """Collects and returns a dataframe containing all reports by type and year found in each companies folder
 
     Parameters
@@ -98,11 +152,16 @@ def get_df(input_path='../files', report_type_mappings={}, selected_report_types
                     output_file = o.name if os.path.isfile(
                         expected_output_path) else np.NaN
 
-                    text = get_text_from_yaml(expected_output_path)
-                    text = text if text else np.NaN
+                    row = [country, company, orig_report_type,
+                           report_type, year, entry.name, output_file]
 
-                    input_files.append(
-                        [country, company, orig_report_type, report_type, year, entry.name, output_file, text])
+                    if include_text:
+                        text = get_text_from_yaml(
+                            expected_output_path, include_page_no=include_page_no)
+                        text = text if text else np.NaN
+                        row.append(text)
+
+                    input_files.append(row)
     df = pd.DataFrame(input_files, columns=[
                       'country', 'company', 'orig_report_type', 'report_type', 'year', 'input_file', 'output_file', 'text'])
     # Filter out report types that are not selected
