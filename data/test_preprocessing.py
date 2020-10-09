@@ -163,8 +163,8 @@ Almost a quarter of flaring in our Upstream and Integrated Gas facilities in
 Company of Nigeria Limited (SPDC). Flaring from SPDC-operated facilities fell 
 by more than 40% between 2013 and 2017. However, flaring intensity 
 levels in SPDC increased in 2017 compared with 2016, partly due to the 
-restart of facilities that were offline for most of 2016. Several new gas-
-gathering projects came on stream at the end of 2017. However, the 
+restart of facilities that were offline for most of 2016. Several new gasgathering 
+projects came on stream at the end of 2017. However, the 
 planned start-up dates for two gas-gathering projects have historically been 
 delayed due to lack of adequate joint venture funding. Nevertheless, with 
 funding now restored, the projects are planned for completion in 2018-19.

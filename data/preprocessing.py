@@ -28,6 +28,10 @@ class DocumentPreprocessor():
         self.doc = re.sub(r'(\s[cC][oO0]\n*\n[2]\n)', ' CO2 ', self.doc)
         return self.doc
 
+    def replace_tabs(self):
+        self.doc = re.sub(r'\t', ' ', self.doc)
+        return self.doc
+
     def strip_urls(self):
         """Remove URLs from the text"""
         self.doc = re.sub(
@@ -105,7 +109,13 @@ class DocumentPreprocessor():
         #  self.doc = "\n\n".join(result)
 
         self.doc = re.sub(
-            r'(?<=[a-z\-,])+ *\n{2,}(?=[a-z$£€0-9\>\-*])', '\n', self.doc)
+            r'(?<=[0-9a-z\-,&+`])+ *\n{2,}(?=[a-z$£€0-9\>\-*])', '\n', self.doc)
+        return self.doc
+
+    def fix_linebreaks(self):
+        """Replace word that is split by linebreaks"""
+        # Note the capturing group!
+        self.doc = re.sub(r'-\n *(\w+ *)', r'\1\n', self.doc)
         return self.doc
 
     def fix_bullet_points(self):
@@ -140,6 +150,7 @@ class DocumentPreprocessor():
 
     def process(self):
         self.fix_co2()
+        self.replace_tabs()
         self.strip_urls()
         self.strip_whitespaces()
         self.strip_empty_lines()
@@ -152,6 +163,7 @@ class DocumentPreprocessor():
         self.strip_whitespaces()
         self.strip_empty_lines()
 
+        self.fix_linebreaks()
         self.fix_bullet_points()
         self.fix_missing_paragraph_breaks()
         self.keep_semantic_paragraphs()
