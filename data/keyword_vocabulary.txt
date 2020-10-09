@@ -1,0 +1,59 @@
+######################
+#
+#   Contains a list of trigger keywords
+#   All empty lines or starting with # are filtered out
+#
+######################
+
+# General terms
+climate change
+global warming
+climate risk
+greenhouse effect
+sustainable energy
+renewable energy
+renewable electricity
+renewable power
+carbon footprint
+carbon pricing
+carbon tax
+carbon emission
+co2
+ghg
+greenhouse gas
+greenhouse emission
+climate mitigation
+low carbon
+paris agreement
+kyoto protocol
+ipcc
+
+# Specific risk terms
+################################
+
+# Transition risk
+emission regulation
+emission standard
+emission reduction
+emission trading
+cap and trade
+oil price
+
+# Physical risks
+windstorm
+floods
+floodings
+drought
+global temperature
+temperature rise
+extreme weather
+sea level
+
+# Specific opportunities terms
+################################
+
+carbon capture
+carbon sequestration
+co2 sequestration
+electric mobility
+electric vehicles

@@ -30,7 +30,7 @@ For both rule-based and machine learning approaches, at least some labelled docu
 An initial selection of (PROPOSAL:) `n=200` reports from the `Firm_AnnualReport.csv` dataset should yield a first dataset to work with. To enable robustness checks and get insights on generalization capatabilities of the different identification and classification approaches, the (partially random) sample selection process is defined as follows:
 
     -   Select all firm's 2019 report (50 in total)
-    -   Select two firms (PROPOSAL:) `gb_unilever_plc` ( 20 in total, 19 without 2019)
+    -   Select one firm (PROPOSAL:) `gb_unilever_plc` ( 20 in total, 19 without 2019)
     -   The remaining 131 reports are drawn randomly, stratified by:
         -   Year --> Since the dataset is not balanced along the temporal axis
         -   Industry
