@@ -27,6 +27,10 @@ low carbon
 paris agreement
 kyoto protocol
 ipcc
+#Lynn's words:
+climate adaptation
+changing climate
+renewable generation
 
 # Specific risk terms
 ################################
@@ -48,6 +52,16 @@ global temperature
 temperature rise
 extreme weather
 sea level
+# Lynn's edits
+disaster
+extreme event
+storm
+hurricane
+biodiversity
+rainfall
+rain
+monsoon
+migration
 
 # Specific opportunities terms
 ################################
@@ -57,3 +71,13 @@ carbon sequestration
 co2 sequestration
 electric mobility
 electric vehicles
+
+#Lynn's edits
+battery
+solar PV
+photovoltaic
+solar energy
+solar power
+wind energy
+wind power
+wind turbine
