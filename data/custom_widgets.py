@@ -137,7 +137,7 @@ class ReportsLabeler():
 
         # Initialize state
         self.current_report_index, self.number_unlabelled_reports = self.get_next_idx_of_report()
-        self.current_report = None
+        self.current_page = None
         self.counts_table = None
 
         # Initialize buttons
@@ -245,10 +245,10 @@ class ReportsLabeler():
         self.current_page_output.clear_output()
         with self.current_page_output:
             processed_doc = preprocessing.DocumentPreprocessor(
-                self.current_report).process()
+                self.current_page).process()
 
             labelling_widget = self.render_labelling_buttons(processed_doc)
-            raw_doc_widget = render_text(self.current_report)
+            raw_doc_widget = render_text(self.current_page)
             preprocessed_doc_widget = render_text(processed_doc)
 
             tab = Tab()
@@ -267,7 +267,7 @@ class ReportsLabeler():
             text_file_path = os.path.join(folder, selected_row['orig_report_type'] + '_' + str(
                 int(selected_row['year'])), selected_row['output_file'])
             self.page_index_input_field.value = new_value
-            self.current_report = preparation.get_text_from_page(
+            self.current_page = preparation.get_text_from_page(
                 text_file_path, self.page_index_input_field.value)
             self.update_widgets()
             self.render_labelling_output()
