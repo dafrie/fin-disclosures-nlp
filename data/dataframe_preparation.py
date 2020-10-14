@@ -36,7 +36,7 @@ except LookupError:
 
 def get_count_matrix(doc, vocabulary):
     count_vectorizer = CountVectorizer(ngram_range=(
-        1, 2), vocabulary=vocabulary)
+        1, 2), vocabulary=vocabulary, tokenizer=spacy_tokenizer)
     count_matrix = count_vectorizer.fit_transform(doc)
     return count_matrix
 
