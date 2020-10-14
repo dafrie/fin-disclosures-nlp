@@ -343,7 +343,7 @@ class ReportsLabeler():
         self.label_list_output = Output()
 
         display(self.current_report_output)
+        display(self.label_list_output)
         display(HBox((self.prev_relevant_page_button,
                       self.page_index_input_field, self.next_relevant_page_button)))
-        display(self.label_list_output)
         display(self.current_page_output)
