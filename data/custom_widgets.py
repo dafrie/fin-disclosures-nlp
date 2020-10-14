@@ -124,7 +124,8 @@ def render_label_list(labels, update_labels):
 
 
 class ReportsLabeler():
-    def __init__(self, master_input_path, label_output_fn='Firm_AnnualReport_Labels.pkl', keyword_vocabulary_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'keyword_vocabulary.txt')):
+    def __init__(self, files_input_dir, master_input_path, label_output_fn='Firm_AnnualReport_Labels.pkl', keyword_vocabulary_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'keyword_vocabulary.txt')):
+        self.files_input_dir = files_input_dir
         self.master_input_path = master_input_path
         self.label_output_path = os.path.join(
             os.path.dirname(self.master_input_path), label_output_fn)
@@ -262,7 +263,8 @@ class ReportsLabeler():
     def on_page_change(self, new_value):
         with self.current_page_output:
             selected_row = self.df_master.loc[self.current_report_index]
-            path = selected_row['input_file']
+            path = os.path.join(self.files_input_dir,
+                                selected_row['input_file'])
             folder = os.path.dirname(path)
             text_file_path = os.path.join(folder, selected_row['orig_report_type'] + '_' + str(
                 int(selected_row['year'])), selected_row['output_file'])
@@ -312,7 +314,8 @@ class ReportsLabeler():
                 self.current_report_index, self.number_unlabelled_reports = self.get_next_idx_of_report()
             selected_row = self.df_master.loc[self.current_report_index]
 
-            path = selected_row['input_file']
+            path = os.path.join(self.files_input_dir,
+                                selected_row['input_file'])
             folder = os.path.dirname(path)
             text_file_path = os.path.join(folder, selected_row['orig_report_type'] + '_' + str(
                 int(selected_row['year'])), selected_row['output_file'])

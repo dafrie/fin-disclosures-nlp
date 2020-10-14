@@ -222,6 +222,7 @@ def get_df(input_path='../input_files/files', report_type_mappings={}, selected_
         company_loop.update()
         files_loop.set_description(f"{company}")
         for p in files_loop:
+            path = os.path.relpath(p, p.parent.parent)
             r = p.stem.split('_')
             orig_report_type = r[0] if len(r) > 0 else np.NaN
             report_type = report_type_mappings[
@@ -246,7 +247,7 @@ def get_df(input_path='../input_files/files', report_type_mappings={}, selected_
 
             # Mandatory fields
             row = [report_id, country, company, orig_report_type,
-                   report_type, year, p, output_file]
+                   report_type, year, path, output_file]
 
             if include_toc:
                 toc = get_toc_from_yaml(expected_output_path)
