@@ -305,6 +305,7 @@ class ReportsLabeler():
     def on_next_report_button_clicked(self, b, direction):
         self.current_report_output.clear_output()
         self.current_page_output.clear_output()
+        self.label_list_output.clear_output()
         with self.current_report_output:
             if direction > 0:
                 self.df_master.loc[self.current_report_index,
@@ -336,6 +337,7 @@ class ReportsLabeler():
             print("Keyword count table:")
             pprint(self.counts_table)
             self.page_index_input_field.value = 0
+            self.update_widgets()
 
     def render(self):
         self.current_report_output = Output()
