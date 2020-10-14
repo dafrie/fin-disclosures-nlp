@@ -11,26 +11,17 @@ global warming
 climate risk
 greenhouse effect
 sustainable energy
-renewable energy
-renewable electricity
-renewable power
-carbon footprint
-carbon pricing
-carbon tax
-carbon emission
+renewable
+carbon
 co2
 ghg
-greenhouse gas
-greenhouse emission
+greenhouse
 climate mitigation
-low carbon
 paris agreement
 kyoto protocol
 ipcc
-#Lynn's words:
 climate adaptation
 changing climate
-renewable generation
 
 # Specific risk terms
 ################################
@@ -42,6 +33,10 @@ emission reduction
 emission trading
 cap and trade
 oil price
+fossil fuel
+energy legislation
+environmental legislation
+climate legislation
 
 # Physical risks
 windstorm
@@ -52,7 +47,6 @@ global temperature
 temperature rise
 extreme weather
 sea level
-# Lynn's edits
 disaster
 extreme event
 storm
@@ -62,6 +56,10 @@ rainfall
 rain
 monsoon
 migration
+catastrophic event
+climate feedback
+climate impacts
+climate variability
 
 # Specific opportunities terms
 ################################
@@ -71,8 +69,6 @@ carbon sequestration
 co2 sequestration
 electric mobility
 electric vehicles
-
-#Lynn's edits
 battery
 solar PV
 photovoltaic
@@ -81,3 +77,6 @@ solar power
 wind energy
 wind power
 wind turbine
+bio fuel
+circular economy
+environmental impact
