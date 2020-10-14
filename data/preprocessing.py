@@ -149,24 +149,25 @@ class DocumentPreprocessor():
         pass
 
     def process(self):
-        self.fix_co2()
-        self.replace_tabs()
-        self.strip_urls()
-        self.strip_whitespaces()
-        self.strip_empty_lines()
-        self.strip_numbers()
-        self.strip_tables()
-        self.strip_titles()
-        self.fix_paragraph_breaks()
+        if self.doc and len(self.doc) > 0:
+            self.fix_co2()
+            self.replace_tabs()
+            self.strip_urls()
+            self.strip_whitespaces()
+            self.strip_empty_lines()
+            self.strip_numbers()
+            self.strip_tables()
+            self.strip_titles()
+            self.fix_paragraph_breaks()
 
-        # Note: Run again to cleanup
-        self.strip_whitespaces()
-        self.strip_empty_lines()
+            # Note: Run again to cleanup
+            self.strip_whitespaces()
+            self.strip_empty_lines()
 
-        self.fix_linebreaks()
-        self.fix_bullet_points()
-        self.fix_missing_paragraph_breaks()
-        self.keep_semantic_paragraphs()
+            self.fix_linebreaks()
+            self.fix_bullet_points()
+            self.fix_missing_paragraph_breaks()
+            self.keep_semantic_paragraphs()
         return self.doc
 
 
