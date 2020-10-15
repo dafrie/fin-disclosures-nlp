@@ -17,7 +17,7 @@ It is recommended to use _miniconda_ (or `conda`) as opposed to Python only defa
 
 ## Data
 
-Raw annual reports, sustainability reports and if available 20-F's of the Euro STOXX 50 for the years 1999-2019 can be [found here (PW: Same as the repository name)](https://cloud.dafrie.dev/index.php/s/QnRH9z9SRJi3rqK)
+Raw annual reports, sustainability reports and if available 20-F's of the Euro STOXX 50 for the years 1999-2019 can be [found here](https://drive.google.com/drive/u/0/folders/1wn8nY1QkkquzRzYjb58SdApM0JKD5xi5).
 
 ## Docker for containerization
 
