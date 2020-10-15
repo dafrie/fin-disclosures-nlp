@@ -115,7 +115,7 @@ class DocumentPreprocessor():
     def fix_linebreaks(self):
         """Replace word that is split by linebreaks"""
         # Note the capturing group!
-        self.doc = re.sub(r'-\n *(\w+ *)', r'\1\n', self.doc)
+        self.doc = re.sub(r'-\n *(\w+[;:,.?!]* *)', r'\1\n', self.doc)
         return self.doc
 
     def fix_bullet_points(self):
