@@ -142,6 +142,9 @@ class ReportsLabeler():
         self.counts_table = None
 
         # Initialize buttons
+        self.prev_report_button = Button(
+            description="Previous labelled Report"
+        )
         self.next_report_button = Button(
             description="Mark as labelled")
         self.next_relevant_page_button = Button(
@@ -152,6 +155,9 @@ class ReportsLabeler():
             value=1, description='Page No:', disabled=False, min=1, max=999)
 
         # Set button callbacks
+        self.prev_report_button.on_click(
+            lambda event: self.on_next_report_button_clicked(event, -1)
+        )
         self.next_report_button.on_click(
             lambda event: self.on_next_report_button_clicked(event, 1))
         self.page_index_input_field.observe(
@@ -180,6 +186,18 @@ class ReportsLabeler():
 
     def save_label_file(self):
         self.df_labels.to_pickle(self.label_output_path)
+
+    def get_prev_idx_of_report(self):
+        all_labelled = self.df_master.loc[self.df_master['is_labelled']]
+        if self.current_report_index in all_labelled.index:
+            _idx = all_labelled.index.get_loc(self.current_report_index)
+            if _idx > 0:
+                index = all_labelled.iloc[[_idx-1]].index[0]
+            else:
+                index = self.current_report_index
+        else:
+            index = all_labelled.iloc[[-1, ]].index[0]
+        return index
 
     def get_next_idx_of_report(self):
         all_unlabelled = self.df_master.loc[(
@@ -313,6 +331,8 @@ class ReportsLabeler():
                 self.save_master_file()
                 self.save_label_file()
                 self.current_report_index, self.number_unlabelled_reports = self.get_next_idx_of_report()
+            if direction < 0:
+                self.current_report_index = self.get_prev_idx_of_report()
             selected_row = self.df_master.loc[self.current_report_index]
 
             path = os.path.join(self.files_input_dir,
@@ -323,7 +343,7 @@ class ReportsLabeler():
 
             # Update widgets
             display(HBox(
-                (Label(f'Current report: {self.current_report_index} / Remaining: {self.number_unlabelled_reports}'), self.next_report_button)))
+                (Label(f'Current report: {self.current_report_index} / Remaining: {self.number_unlabelled_reports}'), self.prev_report_button, self.next_report_button)))
 
             # input_file = FileLink(selected_row['input_file'])
             # display(input_file)
