@@ -15,6 +15,10 @@ from nltk.corpus import stopwords
 
 import spacy
 from spacy.lang.en import English
+
+from data.preprocessing import DocumentPreprocessor
+import data
+
 nlp = spacy.load('en_core_web_md', disable=[
                  "parser", "ner", "entity_linker", "textcat", "entity_ruler"])
 
@@ -63,7 +67,9 @@ def get_counts_per_page(path, vocabulary):
             try:
                 content = yaml.safe_load(stream)
                 for page in content['pages']:
-                    texts.append(page['text'])
+                    text = DocumentPreprocessor(
+                        page['text']).fix_linebreaks()
+                    texts.append(text)
                 count_vectorizer = CountVectorizer(ngram_range=(
                     1, 2), vocabulary=vocabulary, tokenizer=spacy_tokenizer)
                 count_matrix = count_vectorizer.fit_transform(texts)
