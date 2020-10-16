@@ -282,8 +282,16 @@ def filter_line(line):
     return line
 
 
-def get_keywords_from_file(file_name):
+def get_keywords_from_file(file_name, should_lemmatize=True):
     with open(os.path.join(file_name)) as f:
         keywords = [r for r in (filter_line(line.strip())
                                 for line in f.readlines()) if r is not None]
+        if should_lemmatize:
+            result = []
+            for entry in keywords:
+                tokens = nlp(entry)
+                tokens = [token.lemma_.lower().strip() if token.lemma_ !=
+                          "-PRON-" else token.lower_ for token in tokens]
+                result.append(" ".join(tokens))
+            keywords = result
     return keywords
