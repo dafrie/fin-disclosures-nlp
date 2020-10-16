@@ -14,6 +14,7 @@ sustainable energy
 renewable
 carbon
 co2
+co2e
 ghg
 greenhouse
 climate mitigation
@@ -39,6 +40,7 @@ environmental legislation
 climate legislation
 
 # Physical risks
+natural hazard
 windstorm
 floods
 floodings
@@ -80,3 +82,8 @@ wind turbine
 bio fuel
 circular economy
 environmental impact
+water consumption
+water usage
+recycling
+decentralized energy
+energy efficiency
