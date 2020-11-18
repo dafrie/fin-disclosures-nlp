@@ -124,7 +124,7 @@ def render_label_list(labels, update_labels):
 
 
 class ReportsLabeler():
-    def __init__(self, files_input_dir, master_input_path, label_output_fn='Firm_AnnualReport_Labels.pkl', keyword_vocabulary_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'keyword_vocabulary.txt')):
+    def __init__(self, files_input_dir, master_input_path, label_output_fn='Firm_AnnualReport_Labels.pkl', keyword_vocabulary_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'keyword_vocabulary.txt'), add_adjunct_pages=False):
         self.files_input_dir = files_input_dir
         self.master_input_path = master_input_path
         self.label_output_path = os.path.join(
@@ -132,6 +132,7 @@ class ReportsLabeler():
         self.df_master = pd.read_csv(self.master_input_path)
         self.df_master = self.df_master.set_index("id")
         self.load_label_file()
+        self.add_adjunct_pages = add_adjunct_pages
 
         self.vocabulary = preparation.get_keywords_from_file(
             os.path.join(keyword_vocabulary_path))
@@ -185,7 +186,7 @@ class ReportsLabeler():
         self.df_master.to_csv(self.master_input_path)
 
     def save_label_file(self):
-        self.df_labels.to_pickle(self.label_output_path)
+        self.df_labels.to_pickle(self.label_output_path, protocol=4)
 
     def get_prev_idx_of_report(self):
         all_labelled = self.df_master.loc[self.df_master['is_labelled']]
@@ -292,7 +293,7 @@ class ReportsLabeler():
             self.update_widgets()
             self.render_labelling_output()
 
-    def on_relevant_page_toggle(self, direction, add_adjunct_pages=True):
+    def on_relevant_page_toggle(self, direction):
         new_page = self.page_index_input_field.value
         has_current_page = bool(len(
             self.counts_table[self.counts_table.index == self.page_index_input_field.value]))
@@ -304,14 +305,14 @@ class ReportsLabeler():
                 new_page = self.counts_table[self.counts_table.index <
                                              self.page_index_input_field.value].iloc[-1].name
             # Add adjunct pages (+/- 1)
-            if add_adjunct_pages and abs(new_page - self.page_index_input_field.value) > 1:
+            if self.add_adjunct_pages and abs(new_page - self.page_index_input_field.value) > 1:
                 correction = 1 if direction == 'next' else -1
                 new_page = self.page_index_input_field.value + \
                     correction if has_current_page else new_page - correction
 
         except IndexError as err:
             # Make sure that for the last keyword hit the adjunct pages are also added
-            if add_adjunct_pages and has_current_page:
+            if self.add_adjunct_pages and has_current_page:
                 if direction == 'next':
                     new_page += 1
                 else:
