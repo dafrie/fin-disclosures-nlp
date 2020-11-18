@@ -144,9 +144,28 @@ class DocumentPreprocessor():
         self.doc = "\n\n".join(result)
 
     def fix_missing_paragraph_breaks(self):
-        """Some notes do not have proper breaks"""
-        # TODO: Requires some heuristic, if just a few paragraphs on a page AND long text, then i.e. split document in partitions. Or in lines with punctuations AND the least length
-        pass
+        """If a paragraph is very long, check if there are missed paragraph breaks by inserting a paragraph break if a sentence ends on a line before the average line length."""
+        paragraphs = self.doc.split("\n\n")
+        result = []
+        for p in paragraphs:
+            if p.count('\n') >= 4:
+                # Get the average line length of this paragraph
+                lines = p.splitlines()
+                avg_line_length = (sum([len(line.strip('\n'))
+                                        for line in lines]) / len(lines))
+
+                # Loop through all ended sentences and add a paragraph in between if below a threshold
+                start_idx = 0
+                copy_p = p
+                ended_sentences = re.finditer(r"(\n)(.+\. *\n)", p)
+                for match in ended_sentences:
+                    line_length = match.end() - match.start()
+                    if line_length < avg_line_length * 0.9:
+                        result.append(copy_p[start_idx:match.end()])
+                        p = copy_p[match.end():]
+                        start_idx = match.end()
+            result.append(p)
+        self.doc = "\n\n".join(result)
 
     def process(self):
         if self.doc and len(self.doc) > 0:

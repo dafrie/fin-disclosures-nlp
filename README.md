@@ -15,6 +15,12 @@ It is recommended to use _miniconda_ (or `conda`) as opposed to Python only defa
 4. Start JupyterLab server: `jupyter lab`
 5. To deactivate the environment, run `conda deactivate`
 
+### Labeler
+
+To run the labeler locally, additionally the following needs to be done:
+
+6. Install jupyter widgets
+
 ## Data
 
 Raw annual reports, sustainability reports and if available 20-F's of the Euro STOXX 50 for the years 1999-2019 can be [found here](https://drive.google.com/drive/u/0/folders/1wn8nY1QkkquzRzYjb58SdApM0JKD5xi5).

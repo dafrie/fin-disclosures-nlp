@@ -212,6 +212,73 @@ Gross Net Gross Net Gross Net Gross Net Gross Net Gross Net
 
 [A] Includes Greenland. 
 """
+    }, {
+        'description': 'Stripping',
+        'raw_text': """
+        Fight climate change and improve the efficiency and use of resources.
+Promote the use of affordable, safe, sustainable and modern energy for all.
+Ensure sustainable consumption and production models.
+
+
+ » Reduction 50% GHG 
+(Scope 1 + 2) by 2030 
+(year base 2015).
+
+
+ » Reduce +70% energy 
+consumption per unit 
+of traffic by 2020.
+
+
+ » Achieve 100% 
+of electricity 
+consumption 
+from renewable 
+sources by 2030.
+
+
+ » Reduce 30% 
+emissions of 
+suppliers/€ destined 
+to purchase by 2025 
+(year base 2016).
+
+
+ » Boost waste 
+recycling.
+        """,
+        'expected_text': """
+Fight climate change and improve the efficiency and use of resources.
+Promote the use of affordable, safe, sustainable and modern energy for all.
+Ensure sustainable consumption and production models.
+
+
+ » Reduction 50% GHG 
+(Scope 1 + 2) by 2030 
+(year base 2015).
+
+
+ » Reduce +70% energy 
+consumption per unit 
+of traffic by 2020.
+
+
+ » Achieve 100% 
+of electricity 
+consumption 
+from renewable 
+sources by 2030.
+
+
+ » Reduce 30% 
+emissions of 
+suppliers/€ destined 
+to purchase by 2025 
+(year base 2016).
+
+
+ » Boost waste 
+recycling."""
     }
 ]
 
