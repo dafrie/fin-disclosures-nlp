@@ -34,6 +34,7 @@ emission reduction
 emission trading
 cap and trade
 oil price
+energy price
 fossil fuel
 energy legislation
 environmental legislation
@@ -57,7 +58,7 @@ biodiversity
 rainfall
 rain
 monsoon
-migration
+# migration
 catastrophic event
 climate feedback
 climate impacts
