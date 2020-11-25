@@ -21,7 +21,7 @@ def highlight_columns(column):
 class CroInferenceViewer():
     """Filters and displays classified paragraphs"""
 
-    def __init__(self, df, label_list=label_list):
+    def __init__(self, df, label_list):
 
         # Initialize state
         self.df = df
