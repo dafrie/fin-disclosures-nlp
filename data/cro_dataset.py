@@ -145,7 +145,7 @@ def prepare_datasets(
         test_docs, test_doc_labels = convert_to_multi_label_cls(
             df_test, cro_level=cro_category_level, exclude_op=should_filter_op)
         features = Features({'text': Value('string'), 'labels': Sequence(ClassLabel(names=[
-                            map_to_field(field='label')[c] for c, content in train_doc_labels.items()], num_classes=len(train_doc_labels.columns)))})
+                            map_to_field(field='code')[c] for c, content in train_doc_labels.items()], num_classes=len(train_doc_labels.columns)))})
 
     elif task == 'multi-class':
         train_docs, train_doc_labels, categories = convert_to_multi_cls(
