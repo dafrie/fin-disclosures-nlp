@@ -1,5 +1,9 @@
 import os
+
+import numpy as np
+
 from sklearn.metrics import average_precision_score, accuracy_score, balanced_accuracy_score, precision_recall_fscore_support, roc_auc_score, matthews_corrcoef
+from sklearn.utils.class_weight import compute_class_weight
 from transformers import logging, AutoModelForSequenceClassification, TrainingArguments, Trainer, AutoTokenizer
 from transformers.trainer_pt_utils import nested_detach
 
@@ -15,7 +19,7 @@ class CroTrainer(Trainer):
 
     """
 
-    def __init__(self, model_checkpoint=None, dataset=None, task=None, avg_strategy=None, max_token_size=256, **kwargs):
+    def __init__(self, model_checkpoint=None, dataset=None, task=None, avg_strategy=None, max_token_size=256, should_weight=True, **kwargs):
         """Custom initialisation that calls the super class method of the base Trainer class.
         kwargs contains the TrainerArguments, so any additional parameter (that is not used in the base class) must be a named argument.
         Dataset doesn't need to be tokenized.
@@ -32,6 +36,11 @@ class CroTrainer(Trainer):
         self.dataset = dataset
         self.task = task
         self.avg_strategy = avg_strategy
+        self.weights = None
+
+        if should_weight:
+            self.weights = self.get_pos_weights()
+            print(f"Using weights: {self.weights}")
 
         # Set and load the tokenizer.
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_checkpoint)
@@ -153,6 +162,26 @@ class CroTrainer(Trainer):
             labels = None
         return (loss, logits, labels)
 
+    def get_pos_weights(self):
+        """Calculates weights for each class that relates to the ratio of positive to negative sample in each class"""
+        if self.task == 'multi-label':
+            pos_counts = np.sum(self.dataset['train']['labels'], axis=0)
+            pos_weights = np.ones_like(pos_counts)
+            neg_counts = [self.dataset['train'].num_rows -
+                          pos_count for pos_count in pos_counts]
+            for idx, (pos_count, neg_count) in enumerate(zip(pos_counts,  neg_counts)):
+                pos_weights[idx] = neg_count / pos_count
+
+        else:
+            y = self.dataset['train']['labels']
+            pos_weights = compute_class_weight(
+                class_weight='balanced', classes=np.unique(y), y=y)
+
+        tensor = torch.as_tensor(pos_weights, dtype=torch.float)
+        if torch.cuda.is_available():
+            return tensor.to(device="cuda")
+        return tensor
+
     def compute_loss(self, model, inputs):
         """Implements a BinaryCrossEntropyWithLogits activation and loss function
           to support multi-label cases
@@ -167,21 +196,19 @@ class CroTrainer(Trainer):
         # Multi-Label: Example: [0 1 1]
         if self.task == 'multi-label':
             # To adjust for inbalanced data, the pos_weight
-            # loss_func = BCEWithLogitsLoss(pos_weight=get_pos_weights())
-            loss_func = BCEWithLogitsLoss()
+            loss_func = BCEWithLogitsLoss(pos_weight=self.weights)
             labels = labels.float()
             loss = loss_func(logits.view(-1, model.num_labels),  # The logits
                              labels.view(-1, model.num_labels)
                              )  # The labels
         # Binary or multi-class
         else:
-            # Binary (Example: [ 0 1]):
             if model.num_labels == 1:
                 loss_fct = MSELoss()  # Doing regression
                 loss = loss_fct(logits.view(-1), labels.view(-1))
             # Multi-class (Example: [0 0 1]):
             else:
-                loss_fct = CrossEntropyLoss()
+                loss_fct = CrossEntropyLoss(weight=self.weights)
                 loss = loss_fct(
                     logits.view(-1, model.num_labels), labels.view(-1))
         return loss
