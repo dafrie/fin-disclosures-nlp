@@ -166,11 +166,9 @@ class CroTrainer(Trainer):
         """Calculates weights for each class that relates to the ratio of positive to negative sample in each class"""
         if self.task == 'multi-label':
             pos_counts = np.sum(self.dataset['train']['labels'], axis=0)
-            pos_weights = np.ones_like(pos_counts)
             neg_counts = [self.dataset['train'].num_rows -
                           pos_count for pos_count in pos_counts]
-            for idx, (pos_count, neg_count) in enumerate(zip(pos_counts,  neg_counts)):
-                pos_weights[idx] = neg_count / pos_count
+            pos_weights = neg_counts / pos_counts
 
         else:
             y = self.dataset['train']['labels']
