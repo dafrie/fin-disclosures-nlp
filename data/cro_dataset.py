@@ -131,7 +131,7 @@ def prepare_datasets(
         # Filter out all the negatives except for opportunities
         query_filter_test = "neg_type != neg_type | neg_type == 'opportunity'"
 
-    elif train_neg_sampling_strategy == "all":
+    elif test_neg_sampling_strategy == "all":
         query_filter_test = None
 
     # Filter...
