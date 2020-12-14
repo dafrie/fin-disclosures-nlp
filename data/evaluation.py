@@ -1,3 +1,7 @@
+import os
+import json
+import math
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -155,7 +159,6 @@ def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro"):
     # 1) Calculate AuC evaluation metrics
     roc_auc = roc_auc_score(labels, preds_probs, average=averaging)
     pr_auc = average_precision_score(labels, preds_probs, average=averaging)
-    scores = pd.DataFrame(data={"ROC AuC": [roc_auc], "PR AuC": [pr_auc]})
 
     # Set labels based on provided threshold values
     preds_bool = preds_probs > np.array([i for i in thresholds])
@@ -163,13 +166,71 @@ def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro"):
     # Print the classification evaluation metrics
     print(f"Using threshold values {thresholds}")
     print(classification_report(labels, preds_bool, target_names=labels.columns))
+    cls_report = classification_report(
+        labels, preds_bool, target_names=labels.columns, output_dict=True)
 
     # Plot confusion matrix
-    cms = multilabel_confusion_matrix(labels, preds_bool)
-    print(cms)
+    mcm = multilabel_confusion_matrix(labels, preds_bool)
+    # The cm output of scikit-learn is flipped...
+    flipped_mcm = []
+    for i in mcm:
+        flipped_mcm.append(np.flip(np.rot90(np.fliplr(i))).tolist())
+
+    plot_cm_grid(flipped_mcm, labels.columns)
+
+    scores = pd.DataFrame(data={"ROC AuC": [roc_auc], "PR AuC": [
+                          pr_auc], "F1": [cls_report["macro avg"]["f1-score"]], "Report": [json.dumps(cls_report)], "CMS": [json.dumps(flipped_mcm)]})
 
     return scores
 
 
-def plot_confusion_matrix(labels, predictions):
-    cm = confusion_matrix
+def plot_cm_grid(mcm, class_labels, ncols=2):
+
+    figure, axes = plt.subplots(ncols=ncols, nrows=(
+        math.ceil(len(mcm) / ncols)), sharex=True, sharey=False)
+
+    for idx, ax in enumerate(axes.flat):
+        if idx >= len(mcm):
+            figure.delaxes(ax)
+            continue
+        cm = mcm[idx]
+        subplot = sns.heatmap(cm, cmap=plt.cm.Blues, annot=True, xticklabels=["Positive", "Negative"], yticklabels=["Positive", "Negative"],
+                              ax=ax, vmin=0, cbar=False)
+        subplot.set(
+            title=f"{class_labels[idx]}", xlabel="Actual (j)", ylabel="Predicted (i)")
+    plt.tight_layout()
+    plt.show()
+
+
+class Results:
+    def __init__(self, path, params):
+        self.path = path
+        self.params = params
+        self.id = params["scenario"] + "_" + params["model_name"]
+        self.load()
+
+    def load(self):
+        if os.path.exists(self.path):
+            self.df = pd.read_csv(self.path)
+            self.df = self.df.set_index("id")
+        else:
+            self.df = pd.DataFrame(data={"id": [self.id]})
+            self.df = self.df.set_index("id")
+            self.save()
+
+    def save(self):
+        # TODO: Do we need to reset the index before saving?
+        self.df.to_csv(self.path, index_label="id")
+
+    def log_experiment(self, data, prefix=None):
+        self.load()
+        # If not a dict, assume its a dataframe and convert the first row
+        if type(data) is not dict:
+            data = data.to_dict('records')[0]
+
+        keys = [k if not prefix else prefix + "_" + k for k in data.keys()]
+        self.df.loc[self.id, keys] = data.values()
+        self.save()
+
+    def export_report(self):
+        pass
