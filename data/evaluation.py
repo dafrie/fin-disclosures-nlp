@@ -197,6 +197,9 @@ def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro"):
     for i in mcm:
         flipped_mcm.append(np.flip(np.rot90(np.fliplr(i))).tolist())
 
+    sns.set_theme(style="ticks", rc={'text.usetex': True})
+    sns.set_context("paper")
+
     plot_cm_grid(flipped_mcm, labels.columns)
 
     scores = pd.DataFrame(data={"ROC AuC": [roc_auc], "PR AuC": [
@@ -219,7 +222,7 @@ def plot_cm_grid(mcm, class_labels, ncols=2):
                               ax=ax, vmin=0, cbar=False)
         subplot.set(
             title=f"{class_labels[idx]}", xlabel="Actual (j)", ylabel="Predicted (i)")
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.show()
 
 
