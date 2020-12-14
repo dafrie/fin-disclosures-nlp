@@ -37,15 +37,15 @@ def plot_roc_curve(labels, preds_probs, ax):
     for (idx, class_labels) in labels.iteritems():
         # Get class probabilites for the current class
         class_probs = preds_probs[:, counter]
-        label = map_to_field()[idx]
-        color = map_to_field('color')[idx]
-        linestyle = map_to_field('linestyle')[idx]
+        label = map_to_field().get(idx, "Relevant")
+        color = map_to_field('color').get(idx, "black")
+        linestyle = map_to_field('linestyle').get(idx, "-")
 
-        # calculate the P-R curve
+        # calculate the roc curve
         fpr[idx], tpr[idx], threshold[idx] = roc_curve(
             class_labels, class_probs)
 
-        # AP is the same as P-R AuC...
+        # calc the score
         roc_auc[idx] = roc_auc_score(class_labels, class_probs)
 
         # Plot the class curve
@@ -101,8 +101,10 @@ def plot_pr_curve(labels, preds_probs, ax):
     for (idx, class_labels) in labels.iteritems():
         # Get class probabilites for the current class
         class_probs = preds_probs[:, counter]
-        color = map_to_field('color')[idx]
-        linestyle = map_to_field('linestyle')[idx]
+
+        label = map_to_field().get(idx, "Relevant")
+        color = map_to_field('color').get(idx, "black")
+        linestyle = map_to_field('linestyle').get(idx, "-")
 
         # Average precision is the same as P-R AuC...
         pr_auc[idx] = average_precision_score(class_labels, class_probs)
@@ -137,6 +139,13 @@ def plot_pr_curve(labels, preds_probs, ax):
 
 
 def threshold_moving_report(labels, preds_probs, averaging="macro"):
+    try:
+        np.shape(labels)[1]
+    except IndexError:
+        is_binary = True
+        preds_probs = preds_probs[:, 1]
+        labels = labels.to_frame(name="Relevant")
+
     # 1) Calculate AuC evaluation metrics
     roc_auc = roc_auc_score(labels, preds_probs, average=averaging)
     pr_auc = average_precision_score(labels, preds_probs, average=averaging)
@@ -147,8 +156,9 @@ def threshold_moving_report(labels, preds_probs, averaging="macro"):
 
     fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
 
-    best_roc_threshold = plot_roc_curve(labels, preds_probs, axes[0])
-    best_pr_threshold = plot_pr_curve(labels, preds_probs, axes[1])
+    corr_probs = np.reshape(preds_probs, (-1, 1)) if is_binary else preds_probs
+    best_roc_threshold = plot_roc_curve(labels, corr_probs, axes[0])
+    best_pr_threshold = plot_pr_curve(labels, corr_probs, axes[1])
 
     scores = pd.DataFrame(data={"ROC AuC": [roc_auc], "PR AuC": [pr_auc]})
 
@@ -156,6 +166,14 @@ def threshold_moving_report(labels, preds_probs, averaging="macro"):
 
 
 def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro"):
+
+    try:
+        np.shape(labels)[1]
+    except IndexError:
+        is_binary = True
+        preds_probs = preds_probs[:, 1]
+        labels = labels.to_frame(name="Relevant")
+
     # 1) Calculate AuC evaluation metrics
     roc_auc = roc_auc_score(labels, preds_probs, average=averaging)
     pr_auc = average_precision_score(labels, preds_probs, average=averaging)
@@ -165,12 +183,15 @@ def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro"):
 
     # Print the classification evaluation metrics
     print(f"Using threshold values {thresholds}")
-    print(classification_report(labels, preds_bool, target_names=labels.columns))
+    print(classification_report(labels, preds_bool,
+                                target_names=labels.columns if not is_binary else None))
     cls_report = classification_report(
-        labels, preds_bool, target_names=labels.columns, output_dict=True)
+        labels, preds_bool, labels=[1] if is_binary else None, target_names=labels.columns if not is_binary else None, output_dict=True)
 
     # Plot confusion matrix
     mcm = multilabel_confusion_matrix(labels, preds_bool)
+    if is_binary:
+        mcm = mcm[1:]
     # The cm output of scikit-learn is flipped...
     flipped_mcm = []
     for i in mcm:

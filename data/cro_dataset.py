@@ -73,6 +73,7 @@ def prepare_datasets(
         should_filter_op=True,
         as_huggingface_ds=False,
         validation_split=0,
+        train_pos_sampling_strategy=None,
         train_neg_sampling_strategy=None,
         test_neg_sampling_strategy=None,
         seed_value=42,
@@ -139,6 +140,10 @@ def prepare_datasets(
         df_test.query(query_filter_test,
                       inplace=True)
 
+    # If (up)-sampling for training is selected:
+    if train_pos_sampling_strategy == "upsample":
+        pass  # TODO: df_train =
+
     if task == 'multi-label':
         train_docs, train_doc_labels = convert_to_multi_label_cls(
             df_train, cro_level=cro_category_level, exclude_op=should_filter_op)
@@ -182,6 +187,9 @@ def prepare_datasets(
         if validation_split > 0:
             dataset['train'], dataset['valid'] = dataset['train'].train_test_split(
                 test_size=validation_split, seed=seed_value).values()
+        print(dataset)
         return dataset
 
+    print(
+        f"Loaded dataset. Train: {len(train_docs)}, Test: {len(test_docs)}, Dim: {1 if TASK == 'binary' else np.shape(train_doc_labels)[1]}")
     return train_docs, train_doc_labels, test_docs, test_doc_labels
