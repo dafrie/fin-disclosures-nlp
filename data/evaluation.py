@@ -140,6 +140,7 @@ def plot_pr_curve(labels, preds_probs, ax):
 
 def threshold_moving_report(labels, preds_probs, averaging="macro"):
     try:
+        is_binary = False
         np.shape(labels)[1]
     except IndexError:
         is_binary = True
@@ -168,6 +169,7 @@ def threshold_moving_report(labels, preds_probs, averaging="macro"):
 def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro"):
 
     try:
+        is_binary = False
         np.shape(labels)[1]
     except IndexError:
         is_binary = True
