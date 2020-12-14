@@ -191,5 +191,5 @@ def prepare_datasets(
         return dataset
 
     print(
-        f"Loaded dataset. Train: {len(train_docs)}, Test: {len(test_docs)}, Dim: {1 if TASK == 'binary' else np.shape(train_doc_labels)[1]}")
+        f"Loaded dataset. Train: {len(train_docs)}, Test: {len(test_docs)}, Dim: {1 if task == 'binary' else np.shape(train_doc_labels)[1]}")
     return train_docs, train_doc_labels, test_docs, test_doc_labels
