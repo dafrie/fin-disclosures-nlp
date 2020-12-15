@@ -138,7 +138,7 @@ def plot_pr_curve(labels, preds_probs, ax):
     return best_threshold
 
 
-def threshold_moving_report(labels, preds_probs, averaging="macro"):
+def threshold_moving_report(labels, preds_probs, averaging="macro", export_path=None):
     try:
         is_binary = False
         np.shape(labels)[1]
@@ -161,12 +161,15 @@ def threshold_moving_report(labels, preds_probs, averaging="macro"):
     best_roc_threshold = plot_roc_curve(labels, corr_probs, axes[0])
     best_pr_threshold = plot_pr_curve(labels, corr_probs, axes[1])
 
+    if export_path:
+        fig.savefig(export_path)
+
     scores = pd.DataFrame(data={"ROC AuC": [roc_auc], "PR AuC": [pr_auc]})
 
     return scores, best_roc_threshold, best_pr_threshold
 
 
-def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro"):
+def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro", export_path=None):
 
     try:
         is_binary = False
@@ -202,7 +205,10 @@ def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro"):
     sns.set_theme(style="ticks", rc={'text.usetex': True})
     sns.set_context("paper")
 
-    plot_cm_grid(flipped_mcm, labels.columns)
+    fig = plot_cm_grid(flipped_mcm, labels.columns)
+
+    if export_path:
+        fig.savefig(export_path)
 
     scores = pd.DataFrame(data={"ROC AuC": [roc_auc], "PR AuC": [
                           pr_auc], "F1": [cls_report["macro avg"]["f1-score"]], "Report": [json.dumps(cls_report)], "CMS": [json.dumps(flipped_mcm)]})
@@ -226,6 +232,7 @@ def plot_cm_grid(mcm, class_labels, ncols=2):
             title=f"{class_labels[idx]}", xlabel="Actual (j)", ylabel="Predicted (i)")
     # plt.tight_layout()
     plt.show()
+    return figure
 
 
 class Results:
