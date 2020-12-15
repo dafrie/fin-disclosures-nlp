@@ -162,7 +162,8 @@ def threshold_moving_report(labels, preds_probs, averaging="macro", export_path=
     best_pr_threshold = plot_pr_curve(labels, corr_probs, axes[1])
 
     if export_path:
-        fig.savefig(export_path)
+        fig.savefig(export_path + ".jpg")
+        fig.savefig(export_path + ".pdf")
 
     scores = pd.DataFrame(data={"ROC AuC": [roc_auc], "PR AuC": [pr_auc]})
 
@@ -208,7 +209,8 @@ def test_evaluation_report(labels, preds_probs, thresholds, averaging="macro", e
     fig = plot_cm_grid(flipped_mcm, labels.columns)
 
     if export_path:
-        fig.savefig(export_path)
+        fig.savefig(export_path + ".jpg")
+        fig.savefig(export_path + ".pdf")
 
     scores = pd.DataFrame(data={"ROC AuC": [roc_auc], "PR AuC": [
                           pr_auc], "F1": [cls_report["macro avg"]["f1-score"]], "Report": [json.dumps(cls_report)], "CMS": [json.dumps(flipped_mcm)]})
