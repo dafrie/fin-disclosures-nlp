@@ -228,7 +228,7 @@ def plot_cm_grid(mcm, class_labels, ncols=2):
             figure.delaxes(ax)
             continue
         cm = mcm[idx]
-        subplot = sns.heatmap(cm, cmap=plt.cm.Blues, annot=True, xticklabels=["Positive", "Negative"], yticklabels=["Positive", "Negative"],
+        subplot = sns.heatmap(cm, cmap=plt.cm.Blues, fmt="d", annot=True, xticklabels=["Positive", "Negative"], yticklabels=["Positive", "Negative"],
                               ax=ax, vmin=0, cbar=False)
         subplot.set(
             title=f"{class_labels[idx]}", xlabel="Actual (j)", ylabel="Predicted (i)")
