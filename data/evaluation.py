@@ -56,7 +56,7 @@ def plot_roc_curve(labels, preds_probs, ax):
         # Since J = Sensititivty + Specificity - 1 --> Sens + (1- FPR) - 1
         J_stat = tpr[idx] - fpr[idx]
 
-        max_threshold_idx = np.argmax(J_stat)
+        max_threshold_idx = np.nanargmax(J_stat)
         best_threshold[idx] = threshold[idx][max_threshold_idx]
         best_j_stat[idx] = J_stat[max_threshold_idx]
 
@@ -121,7 +121,7 @@ def plot_pr_curve(labels, preds_probs, ax):
         f1_scores = (2 * precision[idx] * recall[idx]
                      ) / (precision[idx] + recall[idx])
 
-        max_threshold_idx = np.argmax(f1_scores)
+        max_threshold_idx = np.nanargmax(f1_scores)
         best_threshold[idx] = threshold[idx][max_threshold_idx]
         best_f1_score[idx] = f1_scores[max_threshold_idx]
 
