@@ -10,6 +10,7 @@ import seaborn as sns
 from sklearn.metrics import confusion_matrix, roc_auc_score, average_precision_score, roc_curve, precision_recall_curve, classification_report, multilabel_confusion_matrix
 
 from .constants import map_to_field
+from .utils.string import tex_escape
 
 
 def plot_roc_curve(labels, preds_probs, ax):
@@ -50,7 +51,7 @@ def plot_roc_curve(labels, preds_probs, ax):
 
         # Plot the class curve
         ax.plot(fpr[idx], tpr[idx], color, linestyle=linestyle, lw=2,
-                label=f'{label} ROC AuC: {roc_auc[idx]:.3f}')
+                label=f'{tex_escape(label)} ROC AuC: {roc_auc[idx]:.3f}')
 
         # Get the max Youden's J stat,
         # Since J = Sensititivty + Specificity - 1 --> Sens + (1- FPR) - 1
@@ -115,7 +116,7 @@ def plot_pr_curve(labels, preds_probs, ax):
 
         # Plot the class curve
         ax.plot(recall[idx], precision[idx], color, linestyle=linestyle, lw=2,
-                label=f'{idx} P-R AuC: {pr_auc[idx]:.3f}')
+                label=f'{tex_escape(idx)} P-R AuC: {pr_auc[idx]:.3f}')
 
         # Get the F1-maximizing threshold
         f1_scores = (2 * precision[idx] * recall[idx]
@@ -231,7 +232,7 @@ def plot_cm_grid(mcm, class_labels, ncols=2):
         subplot = sns.heatmap(cm, cmap=plt.cm.Blues, fmt="d", annot=True, xticklabels=["Positive", "Negative"], yticklabels=["Positive", "Negative"],
                               ax=ax, vmin=0, cbar=False)
         subplot.set(
-            title=f"{class_labels[idx]}", xlabel="Actual (j)", ylabel="Predicted (i)")
+            title=f"{tex_escape(class_labels[idx])}", xlabel="Actual (j)", ylabel="Predicted (i)")
     # plt.tight_layout()
     plt.show()
     return figure
