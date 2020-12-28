@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.utils import shuffle
 from datasets import DatasetDict, Dataset, load_dataset, Sequence, ClassLabel, Features, Value, concatenate_datasets
 
-from .constants import map_to_field, get_code_idx_map, cro_category_levels, cro_category_codes, cro_sub_category_codes, cro_categories, cro_sub_categories
+from .constants import map_to_field, get_code_idx_map, cro_category_levels, cro_category_codes, cro_sub_category_codes, cro_categories, cro_sub_categories, cro_categories_with_op, cro_sub_categories_with_op
 
 valid_tasks = {"multi-label", "multi-class", "binary"}
 
@@ -50,10 +50,10 @@ def convert_to_multi_label_cls(df, cro_level, exclude_op):
 
     if cro_level == 'cro':
         category_codes = [c["code"]
-                          for c in cro_categories if not exclude_op or (exclude_op and c["code"] != "OP")]
+                          for c in cro_categories_with_op if not exclude_op or (exclude_op and c["code"] != "OP")]
     else:
         category_codes = [c["code"]
-                          for c in cro_sub_categories if not exclude_op or (exclude_op and c["parent"] != "OP")]
+                          for c in cro_sub_categories_with_op if not exclude_op or (exclude_op and c["parent"] != "OP")]
     labels = labels[category_codes]
 
     assert np.shape(labels)[1] == len(
