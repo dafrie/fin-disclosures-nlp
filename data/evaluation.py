@@ -232,8 +232,9 @@ def plot_cm_grid(mcm, class_labels, ncols=2):
         subplot = sns.heatmap(cm, cmap=plt.cm.Blues, fmt="d", annot=True, xticklabels=["Positive", "Negative"], yticklabels=["Positive", "Negative"],
                               ax=ax, vmin=0, cbar=False)
         subplot.set(
-            title=f"{tex_escape(class_labels[idx])}", xlabel="Actual (j)", ylabel="Predicted (i)")
-    # plt.tight_layout()
+            title=f"{class_labels[idx]}", xlabel="Actual (j)", ylabel="Predicted (i)")
+    plt.tight_layout()
+    plt.subplots_adjust(hspace=1.2, wspace=0.8)
     plt.show()
     return figure
 
