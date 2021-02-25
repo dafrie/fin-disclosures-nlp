@@ -77,7 +77,7 @@ def plot_roc_curve(labels, preds_probs, ax):
     return best_threshold
 
 
-def plot_pr_curve(labels, preds_probs, ax):
+def plot_pr_curve(labels, preds_probs, ax, beta):
     """Plots the Precision-Recall curve for multi-label classification predictions and returns the F1-Score maximizing threshold values of each class
 
     Parameters
@@ -93,10 +93,14 @@ def plot_pr_curve(labels, preds_probs, ax):
     recall = dict()
     threshold = dict()
     best_f1_score = dict()
+    best_fbeta_score = dict()
     best_threshold = dict()
 
     if not ax:
         ax = plt
+
+    if not beta:
+        beta = 1
 
     counter = 0
     for (idx, class_labels) in labels.iteritems():
@@ -122,13 +126,23 @@ def plot_pr_curve(labels, preds_probs, ax):
         f1_scores = (2 * precision[idx] * recall[idx]
                      ) / (precision[idx] + recall[idx])
 
-        max_threshold_idx = np.nanargmax(f1_scores)
-        best_threshold[idx] = threshold[idx][max_threshold_idx]
-        best_f1_score[idx] = f1_scores[max_threshold_idx]
+        fbeta_scores = (
+            1 + beta*beta) * ((precision[idx] * recall[idx]) / ((beta*beta*precision[idx]) + recall[idx]))
 
-        # Add a dot for the F1 optimizing threshold value
+        if beta:
+            max_threshold_idx = np.nanargmax(fbeta_scores)
+            best_fbeta_score[idx] = fbeta_scores[max_threshold_idx]
+            label = f'Fbeta ({beta}): {best_fbeta_score[idx]:.3f}'
+        else:
+            max_threshold_idx = np.nanargmax(f1_scores)
+            best_f1_score[idx] = f1_scores[max_threshold_idx]
+            label = f'F1: {best_f1_score[idx]:.3f}'
+
+        best_threshold[idx] = threshold[idx][max_threshold_idx]
+
+        # Add a dot for the Fbeta/F1 optimizing threshold value
         ax.scatter(recall[idx][max_threshold_idx], precision[idx]
-                   [max_threshold_idx], marker='o', color=color, label=f'F1: {best_f1_score[idx]:.3f} | Threshold: {best_threshold[idx]:.3f}')
+                   [max_threshold_idx], marker='o', color=color, label=f'{label} | Threshold: {best_threshold[idx]:.3f}')
 
         counter += 1
 
@@ -139,7 +153,14 @@ def plot_pr_curve(labels, preds_probs, ax):
     return best_threshold
 
 
-def threshold_moving_report(labels, preds_probs, averaging="macro", export_path=None):
+def threshold_moving_report(
+        labels,
+        preds_probs,
+        beta=1,
+        averaging="macro",
+        export_path=None,
+
+):
     try:
         is_binary = False
         np.shape(labels)[1]
@@ -160,7 +181,7 @@ def threshold_moving_report(labels, preds_probs, averaging="macro", export_path=
 
     corr_probs = np.reshape(preds_probs, (-1, 1)) if is_binary else preds_probs
     best_roc_threshold = plot_roc_curve(labels, corr_probs, axes[0])
-    best_pr_threshold = plot_pr_curve(labels, corr_probs, axes[1])
+    best_pr_threshold = plot_pr_curve(labels, corr_probs, axes[1], beta)
 
     if export_path:
         fig.savefig(export_path + ".jpg")
