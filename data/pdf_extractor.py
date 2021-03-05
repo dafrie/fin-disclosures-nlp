@@ -1,3 +1,22 @@
+from utils.args import is_existing_file, is_valid_folder
+from utils.timer import timer
+import pandas as pd
+from spacy.matcher import PhraseMatcher
+import spacy
+from nltk.tokenize import RegexpTokenizer
+from pdfminer.high_level import extract_text, extract_text_to_fp
+from pdfminer.converter import TextConverter
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.pdftypes import PDFStream, PDFObjRef, resolve1, stream_value
+from pdfminer.psparser import PSKeyword, PSLiteral, LIT
+from pdfminer.pdfpage import PDFPage
+from pdfminer.layout import LAParams
+from pdfminer.pdfparser import PDFParser
+from pdfminer.pdfdocument import PDFDocument, PDFNoOutlines
+from tika import parser
+from tqdm import tqdm
+import pytesseract
+from bs4 import BeautifulSoup
 import sys
 import os
 import shutil
@@ -9,28 +28,8 @@ import argparse
 from pathlib import Path
 
 import tika
-from bs4 import BeautifulSoup
-import pytesseract
-from tqdm import tqdm
+tika.initVM()
 
-from tika import parser
-from pdfminer.pdfdocument import PDFDocument, PDFNoOutlines
-from pdfminer.pdfparser import PDFParser
-from pdfminer.layout import LAParams
-from pdfminer.pdfpage import PDFPage
-from pdfminer.psparser import PSKeyword, PSLiteral, LIT
-from pdfminer.pdftypes import PDFStream, PDFObjRef, resolve1, stream_value
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.converter import TextConverter
-from pdfminer.high_level import extract_text, extract_text_to_fp
-from nltk.tokenize import RegexpTokenizer
-import spacy
-from spacy.matcher import PhraseMatcher
-
-import pandas as pd
-
-from utils.timer import timer
-from utils.args import is_existing_file, is_valid_folder
 
 try:
     from PIL import Image

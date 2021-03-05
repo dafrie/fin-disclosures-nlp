@@ -218,8 +218,12 @@ def get_df(input_path='../input_files/files', report_type_mappings={}, selected_
     # Loop through companies
     for company_path in company_loop:
         c = company_path.name.partition('_')
-        country = c[0] if c[0] else np.NaN
-        company = c[2] if c[2] else np.NaN
+        if len(c[2]) > 0:
+            country = c[0] if c[0] else np.NaN
+            company = c[2] if c[2] else np.NaN
+        else:
+            country = "NotAvailable"
+            company = c[0]
 
         # Loop through files within
         company_files = get_reports_paths(company_path.path)

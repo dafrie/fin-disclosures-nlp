@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 import os
+import unicodedata
 
 import data.dataframe_preparation as preparation
 import data.preprocessing as preprocessing
@@ -13,8 +14,12 @@ import data.preprocessing as preprocessing
 # from data import preprocessing
 
 
-def render_text(text, include_line_no=True):
+def render_text(text, include_line_no=True, normalize_text=True):
     """Renders a large text field with line numbers"""
+
+    if normalize_text:
+        text = ''.join([i if ord(i) < 128 else ' ' for i in text])
+        # text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore')
 
     style = '' if not include_line_no else """
     <style>
@@ -35,11 +40,12 @@ text_layout = Layout(width="500px")
 comment_layout = Layout(width="300px")
 
 cro_options = [('None', ''), ('Physical Risk', 'PR'),
-               ('Transition Risk', 'TR'), ('Opportunity', 'OP')]
+               ('Transition Risk', 'TR')]
 cro_sub_type_options = [('None', ''), ('PR - Accute', 'ACUTE'), ('PR - Chronic', 'CHRON'),
-                        ('TR - Policy and Legal', 'POLICY'), ('TR - Technology',
-                                                              'TECH'), ('TR - Market', 'MARKET'), ('TR - Reputation', 'REPUT'),
-                        ('OP - Resource Efficiency', 'EFFI'), ('OP - Energy Source', 'ENERGY'), ('OP - Products and Services', 'PRODUCTS'), ('OP - Markets', 'MARKETS'), ('OP - Resilience', 'RESILI')]
+                        ('TR - Policy and Legal', 'POLICY'), ('TR - Technology and Market',
+                                                              'MARKET'), ('TR - Reputation', 'REPUT'
+                                                                          ),
+                        ]
 
 label_options = [('None', ''), ('Positive', True), ('Negative', False)]
 
@@ -268,8 +274,10 @@ class ReportsLabeler():
                 self.current_page).process()
 
             labelling_widget = self.render_labelling_buttons(processed_doc)
-            raw_doc_widget = render_text(self.current_page)
-            preprocessed_doc_widget = render_text(processed_doc)
+            raw_doc_widget = render_text(
+                self.current_page, normalize_text=False)
+            preprocessed_doc_widget = render_text(
+                processed_doc, normalize_text=True)
 
             tab = Tab()
             tab = Tab(
