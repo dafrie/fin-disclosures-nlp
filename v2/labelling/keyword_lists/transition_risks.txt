@@ -10,19 +10,20 @@ climate change
 global warming
 changing climate
 climate risk
-greenhouse effect
-climate mitigation
+greenhouse
+mitigation
+mitigate climate
 paris agreement
 kyoto protocol
 ipcc
 climate adaptation
 
 # Transition risks
-emission regulation
-emission standard
-emission reduction
-emission trading
-emission trade
+emissions regulation
+emissions standard
+emissions reduction
+emissions trading
+emissions trade
 European Trading
 cap and trade
 oil price
@@ -34,11 +35,16 @@ climate legislation
 transition low
 low carbon
 carbon transition
+energy transition
 carbon economy
 carbon tax
 co2 price
 transition renewable
 carbon price
+carbon pricing
 emission task
 emission reporting
 reputation
+public concern
+stranding
+stranded asset
