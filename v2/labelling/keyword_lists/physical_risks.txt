@@ -12,9 +12,6 @@ greenhouse effect
 climate adaptation
 changing climate
 
-# Specific risk terms
-################################
-
 # Physical risks
 natural hazard
 windstorm

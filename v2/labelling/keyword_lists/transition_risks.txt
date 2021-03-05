@@ -17,14 +17,13 @@ kyoto protocol
 ipcc
 climate adaptation
 
-# Specific risk terms
-################################
-
 # Transition risks
 emission regulation
 emission standard
 emission reduction
 emission trading
+emission trade
+European Trading
 cap and trade
 oil price
 energy price
@@ -34,8 +33,12 @@ environmental legislation
 climate legislation
 transition low
 low carbon
+carbon transition
 carbon economy
 carbon tax
+co2 price
+transition renewable
+carbon price
 emission task
 emission reporting
 reputation
