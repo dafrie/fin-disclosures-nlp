@@ -1,0 +1,41 @@
+######################
+#
+#   Contains a list of trigger keywords
+#   All empty lines or starting with # are filtered out
+#
+######################
+
+# General terms
+climate change
+global warming
+changing climate
+climate risk
+greenhouse effect
+climate mitigation
+paris agreement
+kyoto protocol
+ipcc
+climate adaptation
+
+# Specific risk terms
+################################
+
+# Transition risks
+emission regulation
+emission standard
+emission reduction
+emission trading
+cap and trade
+oil price
+energy price
+fossil fuel
+energy legislation
+environmental legislation
+climate legislation
+transition low
+low carbon
+carbon economy
+carbon tax
+emission task
+emission reporting
+reputation

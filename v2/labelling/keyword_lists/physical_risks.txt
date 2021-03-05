@@ -1,0 +1,49 @@
+######################
+#
+#   Contains a list of trigger keywords
+#   All empty lines or starting with # are filtered out
+#
+######################
+
+# General terms
+climate change
+climate risk
+greenhouse effect
+climate adaptation
+changing climate
+
+# Specific risk terms
+################################
+
+# Physical risks
+natural hazard
+windstorm
+precipitation pattern
+floods
+floodings
+drought
+heat waves
+global temperature
+temperature rise
+rising temperature
+extreme weather
+sea level
+rising sea
+disaster
+extreme event
+storm
+cyclones
+hurricane
+biodiversity
+rainfall
+rain
+monsoon
+catastrophic event
+climate feedback
+climate impacts
+climate variability
+climate patterns
+weather patterns
+weather event
+weather conditions
+climatic conditions
