@@ -7,10 +7,12 @@
 
 # General terms
 climate change
+global warming
 climate risk
 greenhouse effect
 climate adaptation
 changing climate
+warming climate
 
 # Physical risks
 natural hazard
@@ -19,8 +21,11 @@ precipitation pattern
 floods
 floodings
 drought
+water scarcity
 heat waves
 global temperature
+global average temperature
+global mean temperature
 temperature rise
 rising temperature
 extreme weather
@@ -35,6 +40,7 @@ biodiversity
 rainfall
 rain
 monsoon
+permafrost
 catastrophic event
 climate feedback
 climate impacts
@@ -43,4 +49,5 @@ climate patterns
 weather patterns
 weather event
 weather conditions
-climatic conditions
+climatic
+meteorologic
