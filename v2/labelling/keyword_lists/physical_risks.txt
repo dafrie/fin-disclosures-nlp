@@ -24,7 +24,7 @@ drought
 water scarcity
 heat waves
 global temperature
-global average temperature
+average temperature
 global mean temperature
 temperature rise
 rising temperature
