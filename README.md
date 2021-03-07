@@ -42,7 +42,7 @@ Raw annual reports, sustainability reports and if available 20-F's of the Euro S
 
 ## Cheat Sheet:
 
-- Update environment file if a package was added: `conda env export -f environment.yml` or `conda env export > environment.yml`. NOTE: This will overwrite everything and adds unecessary packages, making cross-platform compatibility difficult. So better to update manually...
+- Update environment file if a package was added: `conda env export -f environment.yml --no-builds` or `conda env export --no-builds > environment.yml`. NOTE: This will overwrite everything and adds unecessary packages, making cross-platform compatibility difficult. So better to update manually...
 
 ## Additional Resources:
 
