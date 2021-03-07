@@ -15,11 +15,12 @@ It is recommended to use _miniconda_ (or `conda`) as opposed to Python only defa
 4. Start JupyterLab server: `jupyter lab`
 5. To deactivate the environment, run `conda deactivate`
 
-### Labeler
+### How to run the Labeler
 
-To run the labeler locally, additionally the following needs to be done:
+To run the labeler locally, additionally the following needs to be done (need to restart the JupyterLab server afterwards):
 
-6. Install jupyter widgets
+6. Enable Jupyter Widgets: `jupyter labextension install @jupyter-widgets/jupyterlab-manager`
+7. Load the spacy language model: `python -m spacy download en_core_web_md`
 
 ## Data
 
