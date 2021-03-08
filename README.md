@@ -19,8 +19,9 @@ It is recommended to use _miniconda_ (or `conda`) as opposed to Python only defa
 
 To run the labeler locally, additionally the following needs to be done (need to restart the JupyterLab server afterwards):
 
-6. Enable Jupyter Widgets: `jupyter labextension install @jupyter-widgets/jupyterlab-manager`
-7. Load the spacy language model: `python -m spacy download en_core_web_md`
+6. Make sure that NodeJS is installed with: `conda install -c conda-forge nodejs`
+7. Enable Jupyter Widgets: `jupyter labextension install @jupyter-widgets/jupyterlab-manager`
+8. Load the spacy language model: `python -m spacy download en_core_web_md`
 
 ## Data
 
