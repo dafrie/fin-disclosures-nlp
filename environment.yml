@@ -3,7 +3,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - appnope=0.1.0
   - argon2-cffi=20.1.0
   - astroid=2.4.2
   - async_generator=1.10
@@ -55,7 +54,6 @@ dependencies:
   - libcblas=3.8.0
   - libcxx=10.0.1
   - libffi=3.2.1
-  - libgfortran=4.0.0
   - libgfortran4=7.5.0
   - liblapack=3.8.0
   - libopenblas=0.3.10

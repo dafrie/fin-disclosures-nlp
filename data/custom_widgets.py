@@ -239,8 +239,8 @@ class ReportsLabeler():
     def render_labelling_buttons(self, doc, ensure_no_duplicates=False):
         rows = []
         paragraphs = doc.split('\n\n')
-        counts = preparation.get_count_matrix(paragraphs, self.vocabulary)
-        page_keyword_count = counts.sum(axis=1)
+        counts_df = preparation.get_count_matrix(paragraphs, self.vocabulary)
+        page_keyword_count = counts_df.sum(axis=1).values
 
         def _on_button_clicked(event, number):
             paragraph_no = int(event.description)
@@ -258,7 +258,7 @@ class ReportsLabeler():
             if ensure_no_duplicates:
                 is_already_selected = True if ((self.df_labels['report_id'] == self.current_report_index) & (
                     self.df_labels['page'] == self.page_index_input_field.value) & (self.df_labels['paragraph_no'] == idx)).any() else False
-            paragraph = f"<p style='background-color: {'yellow' if page_keyword_count[idx] > 0 else 'none'};'>{paragraph}</p>"
+            paragraph = self.highlight_keywords(paragraph, idx, counts_df)
             paragraph_button = Button(
                 description=str(idx), disabled=is_already_selected)
             paragraph_button.on_click(
@@ -378,3 +378,13 @@ class ReportsLabeler():
         display(HBox((self.prev_relevant_page_button,
                       self.page_index_input_field, self.next_relevant_page_button)))
         display(self.current_page_output)
+
+    def highlight_keywords(self, paragraph, idx, counts_df):
+        if counts_df.sum(axis=1)[idx] > 0:
+            keywords = counts_df.columns[counts_df.iloc[idx,:] > 0]
+            for keyword in keywords:
+                paragraph = paragraph.replace(keyword, f"<span style='background-color: orange;'>{keyword}</span>")
+            paragraph = f"<p style='background-color: yellow;'>{paragraph}</p>"
+        else:
+            paragraph = f"<p style='background-color: none;'>{paragraph}</p>"
+        return paragraph
