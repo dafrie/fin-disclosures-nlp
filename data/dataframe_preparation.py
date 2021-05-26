@@ -7,6 +7,10 @@ import string
 
 from tqdm.auto import tqdm
 import yaml
+try:
+    from yaml import CLoader as Loader
+except ImportError:
+    from yaml import Loader
 import pandas as pd
 import numpy as np
 
@@ -50,7 +54,7 @@ def get_count_matrix(doc, vocabulary):
 def get_text_from_page(path, page_no):
     if os.path.isfile(path):
         with open(path, 'r') as stream:
-            content = yaml.safe_load(stream)
+            content = yaml.load(stream, Loader=Loader)
             page = content['pages'][page_no - 1]
             return page['text']
 
@@ -58,7 +62,7 @@ def get_text_from_page(path, page_no):
 def get_document(path):
     if os.path.isfile(path):
         with open(path, 'r') as stream:
-            content = yaml.safe_load(stream)
+            content = yaml.load(stream, Loader=Loader)
             return content['pages']
 
 
@@ -67,7 +71,7 @@ def get_counts_per_page(path, vocabulary):
     if os.path.isfile(path):
         with open(path, 'r') as stream:
             try:
-                content = yaml.safe_load(stream)
+                content = yaml.load(stream, Loader=Loader)
                 for page in content['pages']:
                     text = DocumentPreprocessor(
                         page['text']).fix_linebreaks()
@@ -91,7 +95,7 @@ def get_text_from_yaml(path, include_page_no=True):
     if os.path.isfile(path):
         with open(path, 'r') as stream:
             try:
-                content = yaml.safe_load(stream)
+                content = yaml.load(stream, Loader=Loader)
                 for idx, page in enumerate(content['pages']):
                     if include_page_no:
                         text += '======= Page: ' + \
@@ -106,7 +110,7 @@ def get_toc_from_yaml(path):
     if os.path.isfile(path):
         with open(path, 'r') as stream:
             try:
-                content = yaml.safe_load(stream)
+                content = yaml.load(stream, Loader=Loader)
                 if content['toc'] and len(content['toc']):
                     return content['toc']
             except yaml.YAMLError as exc:
@@ -183,8 +187,12 @@ def get_reports_paths(path):
     result = []
     for f in os.scandir(path):
         p = Path(f.path)
-        if not f.name.startswith('.') and p.suffix == '.pdf' and f.is_file():
-            result.append(p)
+        if not f.name.startswith('.') and p.is_dir():
+            for child in p.iterdir():
+                result.append(child)
+
+        # if not f.name.startswith('.') and p.suffix == '.pdf' and f.is_file():
+        #    result.append(p)
     return result
 
 
