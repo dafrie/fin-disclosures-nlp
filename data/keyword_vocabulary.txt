@@ -67,24 +67,24 @@ climate variability
 # Specific opportunities terms
 ################################
 
-carbon capture
-carbon sequestration
-co2 sequestration
-electric mobility
-electric vehicles
-battery
-solar PV
-photovoltaic
-solar energy
-solar power
-wind energy
-wind power
-wind turbine
-bio fuel
-circular economy
-environmental impact
-water consumption
-water usage
-recycling
-decentralized energy
-energy efficiency
+#carbon capture
+#carbon sequestration
+#co2 sequestration
+#electric mobility
+#electric vehicles
+#battery
+#solar PV
+#photovoltaic
+#solar energy
+#solar power
+#wind energy
+#wind power
+#wind turbine
+#bio fuel
+#circular economy
+#environmental impact
+#water consumption
+#water usage
+#recycling
+#decentralized energy
+#energy efficiency
