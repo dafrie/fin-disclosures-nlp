@@ -78,7 +78,7 @@ class CroTrainer(Trainer):
         logging.set_verbosity_warning()
         return model
 
-    def prediction_step(self, model, inputs, prediction_loss_only, ignore_keys):
+    def prediction_step_(self, model, inputs, prediction_loss_only, ignore_keys):
         """Custom method overwriting the provided method to include "compute_loss()" which lead to an error when evaluating
           See previous PR: https://github.com/huggingface/transformers/pull/7074/files
         """
@@ -180,13 +180,14 @@ class CroTrainer(Trainer):
             return tensor.to(device="cuda")
         return tensor
 
-    def compute_loss(self, model, inputs):
+    def compute_loss(self, model, inputs, return_outputs=False):
         """Implements a BinaryCrossEntropyWithLogits activation and loss function
           to support multi-label cases
         """
         labels = inputs.pop("labels")
         outputs = model(**inputs)
-        logits = outputs[0]
+        # logits = outputs[0]
+        logits = outputs.logits
 
         ###############################
         #   Note: The multi-label conditional is added since we want to use a different loss function for this case
@@ -195,9 +196,9 @@ class CroTrainer(Trainer):
         if self.task == 'multi-label':
             # To adjust for inbalanced data, the pos_weight
             loss_func = BCEWithLogitsLoss(pos_weight=self.weights)
-            labels = labels.float()
-            loss = loss_func(logits.view(-1, model.num_labels),  # The logits
-                             labels.view(-1, model.num_labels)
+            #labels = labels.float()
+            loss = loss_func(logits.view(-1, self.model.config.num_labels),  # model.num_labels),  # The logits
+                             labels.float().view(-1, self.model.config.num_labels)  # model.num_labels)
                              )  # The labels
         # Binary or multi-class
         else:
@@ -208,8 +209,8 @@ class CroTrainer(Trainer):
             else:
                 loss_fct = CrossEntropyLoss(weight=self.weights)
                 loss = loss_fct(
-                    logits.view(-1, model.num_labels), labels.view(-1))
-        return loss
+                    logits.view(-1, self.model.config.num_labels), labels.view(-1))
+        return (loss, outputs) if return_outputs else loss
 
     def my_compute_metrics(self, pred):
         """Computes classification task metric. Supports both multi-class and multi-label"""
