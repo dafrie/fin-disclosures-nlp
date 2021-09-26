@@ -16,10 +16,10 @@ cro_sub_categories = [{"parent": "PR", "code": "ACUTE", "label": "Acute", "color
                       {"parent": "PR", "code": "CHRON",
                           "label": "Chronic", "color": "lightblue", "linestyle": "-"},
                       {"parent": "TR", "code": "POLICY",
-                          "label": "Policy & Legal", "color": "coral", "linestyle": "-"},
+                          "label": "Policy \& Legal", "color": "coral", "linestyle": "-"},
                       {"parent": "TR", "code": "MARKET",
-                          "label": "Technology & Market", "color": "tomato", "linestyle": "-"},
-                      {"parent": "TR", "code": "REPUTATION",
+                          "label": "Technology \& Market", "color": "tomato", "linestyle": "-"},
+                      {"parent": "TR", "code": "REPUT",
                           "label": "Reputation", "color": "orange", "linestyle": "-"}]
 
 cro_sub_categories_with_op = cro_sub_categories.copy()
