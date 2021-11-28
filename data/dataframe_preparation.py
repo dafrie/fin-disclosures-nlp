@@ -47,7 +47,7 @@ def get_count_matrix(doc, vocabulary):
         1, 2), vocabulary=vocabulary, tokenizer=spacy_tokenizer)
     count_matrix = count_vectorizer.fit_transform(doc)
     count_df = pd.DataFrame(count_matrix.toarray(
-    ), columns=count_vectorizer.get_feature_names())
+    ), columns=count_vectorizer.get_feature_names_out())
     return count_df
 
 
@@ -80,7 +80,7 @@ def get_counts_per_page(path, vocabulary):
                     1, 2), vocabulary=vocabulary, tokenizer=spacy_tokenizer)
                 count_matrix = count_vectorizer.fit_transform(texts)
                 count_df = pd.DataFrame(count_matrix.toarray(
-                ), columns=count_vectorizer.get_feature_names())
+                ), columns=count_vectorizer.get_feature_names_out())
             except yaml.YAMLError as exc:
                 print(exc)
         count_df = count_df[count_df.sum(axis=1) > 0]
