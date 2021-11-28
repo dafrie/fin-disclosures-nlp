@@ -245,6 +245,7 @@ class PdfExtractor:
 
     def process_document(self):
         try:
+            # TODO: Add timeout here
             self.toc = self.extract_toc()
         except Exception as error:
             self.toc = []
