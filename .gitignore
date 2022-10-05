@@ -134,4 +134,4 @@ dmypy.json
 .vscode
 
 /input_files
-config.py
+# config.py
